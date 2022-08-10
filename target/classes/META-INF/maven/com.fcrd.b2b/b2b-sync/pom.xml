@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<groupId>com.fcrd.b2b</groupId>
+	<artifactId>b2b-sync</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+    <name>b2b-sync</name>
+    <description>B2B Sync project</description>
+	
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.6.4</version>
+		<relativePath/>
+	</parent>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>11</java.version>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+	</properties>
+	
+	<dependencies>
+		
+        <dependency>
+            <groupId>com.fcrd.b2b</groupId>
+            <artifactId>b2b-core-api-client</artifactId>
+            <version>0.1.0-SNAPSHOT.20220809212349</version>
+        </dependency>
+		
+        <dependency>
+            <groupId>com.fcrd.b2b</groupId>
+            <artifactId>b2b-sync-api-client</artifactId>
+            <version>0.1.0-SNAPSHOT.20220809212349</version>
+        </dependency>
+		
+        <dependency>
+            <groupId>com.fcrd.b2b</groupId>
+            <artifactId>b2b-navision-client</artifactId>
+            <version>0.1.0-SNAPSHOT.20220809180331</version>
+        </dependency>
+        
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-lang3</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>javax.el-api</artifactId>
+			<version>2.2.4</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.glassfish.web</groupId>
+			<artifactId>javax.el</artifactId>
+			<version>2.2.4</version>
+		</dependency>
+		
+	</dependencies>
+
+	<build>
+		<plugins>
+		
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<configuration>
+							<mainClass>
+								com.fcrd.sync.SyncApplication
+							</mainClass>
+						</configuration>
+					</execution>
+				</executions>
+				
+			</plugin>
+			
+		</plugins>
+	</build>
+
+</project>
