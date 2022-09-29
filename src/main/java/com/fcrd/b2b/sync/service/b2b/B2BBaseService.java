@@ -96,7 +96,7 @@ public class B2BBaseService {
 				lastModifiedDateTime = DateTimeUtils.offsetDateTimeToString(syncStats.getLastExternalModifiedTime(), "MM/dd/yyyy HH:mm:ss.SSS");
 			}
 			
-			logger.info("B2B Customers LastExternalModifiedDateTime: " + lastModifiedDateTime);
+			logger.info("LastExternalModifiedDateTime: " + lastModifiedDateTime);
 		}
 		catch (ApiException e) {
 			throw (e.getCode()==401 ? new B2BUnauthorizedException("Unauthorized") : e);

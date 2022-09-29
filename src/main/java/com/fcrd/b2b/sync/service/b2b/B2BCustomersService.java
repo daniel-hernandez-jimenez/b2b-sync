@@ -1,6 +1,7 @@
 package com.fcrd.b2b.sync.service.b2b;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -10,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.fcrd.b2b.sync.api.ApiException;
 import com.fcrd.b2b.sync.api.client.CustomersApi;
 import com.fcrd.b2b.sync.api.client.model.Customer;
 import com.fcrd.b2b.sync.api.client.model.GetCustomersSyncStatsResponse;
@@ -19,8 +19,6 @@ import com.fcrd.b2b.sync.api.client.model.MergeCustomersRequest;
 import com.fcrd.b2b.sync.api.client.model.MergeResult;
 import com.fcrd.b2b.sync.api.client.model.SyncOperation;
 import com.fcrd.b2b.sync.api.client.model.SyncStats;
-import com.fcrd.b2b.sync.service.B2BUnauthorizedException;
-import com.fcrd.b2b.sync.utils.DateTimeUtils;
 
 @Service
 public class B2BCustomersService extends B2BBaseService {
@@ -47,10 +45,23 @@ public class B2BCustomersService extends B2BBaseService {
 	
 	public void mergeCustomers(List<Customer> customerList) throws Exception {
 		List<MergeCustomerRequest> mergeCustomerRequestList = new ArrayList<>();
-		
-		for (Customer customer : customerList) {
-			mergeCustomerRequestList.add(createMergeCustomerRequest(customer));
+
+		Iterator<Customer> iterator = customerList.iterator();
+		while (iterator.hasNext()) {
+			mergeCustomerRequestList.add(createMergeCustomerRequest(iterator.next()));
+			
+			if (mergeCustomerRequestList.size() == 100) {
+				merge(mergeCustomerRequestList);
+				mergeCustomerRequestList.clear();
+			}
 		}
+		if (mergeCustomerRequestList.size() > 0) {
+			merge(mergeCustomerRequestList);
+		}
+	}
+	
+	private void merge(List<MergeCustomerRequest> mergeCustomerRequestList) throws Exception {
+		logger.info("Total customers to merge in B2B: " + mergeCustomerRequestList.size());
 		
 		MergeCustomersRequest mergeCustomersRequest = new MergeCustomersRequest();
 		mergeCustomersRequest.customers(mergeCustomerRequestList);

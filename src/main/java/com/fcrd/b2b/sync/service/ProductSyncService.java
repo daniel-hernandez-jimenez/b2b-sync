@@ -1,6 +1,7 @@
 package com.fcrd.b2b.sync.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -58,10 +59,15 @@ public class ProductSyncService extends SyncSchedulingConfigurer {
 			else {
 				logger.info("There are " + navItemList.size() + " Dynamics Nav Products to sync");
 				
+				Collections.sort(navItemList, (o1, o2) -> (o1.getLastModifiedDateTime().compare(o2.getLastModifiedDateTime())));
+				
+				logger.info("The " + navItemList.size() + " Product records were sorted!");
+				
 				List<Product> productList = new ArrayList<>();
 				for (B2BItemList navItem : navItemList) {
 					productList.add(generateProductFromB2BItemList(navItem));
 				}
+				
 				b2bProductsService.mergeProducts(productList);
 			}
 		}

@@ -1,6 +1,7 @@
 package com.fcrd.b2b.sync.service.b2b;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -62,13 +63,21 @@ public class B2BProductsService extends B2BBaseService {
 	public void mergeProducts(List<Product> productList) throws Exception {
 		List<MergeProductRequest> mergeProductRequestList = new ArrayList<>();
 		
-		int i = 0;
-		for (Product product : productList) {
-			i++;
-			mergeProductRequestList.add(createMergeProductRequest(product));
-			if (i>5) break;
+		Iterator<Product> iterator = productList.iterator();
+		while (iterator.hasNext()) {
+			mergeProductRequestList.add(createMergeProductRequest(iterator.next()));
+			
+			if (mergeProductRequestList.size() == 100) {
+				merge(mergeProductRequestList);
+				mergeProductRequestList.clear();
+			}
 		}
-		
+		if (mergeProductRequestList.size() > 0) {
+			merge(mergeProductRequestList);
+		}
+	}
+	
+	private void merge(List<MergeProductRequest> mergeProductRequestList) throws Exception {
 		logger.info("Total products to merge in B2B: " + mergeProductRequestList.size());
 		
 		MergeProductsRequest mergeProductsRequest = new MergeProductsRequest();
