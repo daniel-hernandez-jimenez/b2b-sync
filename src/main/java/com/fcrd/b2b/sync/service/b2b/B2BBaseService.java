@@ -6,18 +6,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
-import com.fcrd.b2b.core.api.client.SessionsApi;
-import com.fcrd.b2b.core.api.client.model.CreateSessionRequest;
-import com.fcrd.b2b.core.api.client.model.CreateSessionResponse;
-import com.fcrd.b2b.sync.api.ApiClient;
-import com.fcrd.b2b.sync.api.ApiException;
-import com.fcrd.b2b.sync.api.auth.HttpBearerAuth;
-import com.fcrd.b2b.sync.api.client.model.SyncStats;
+import com.fcrd.b2b.api.client.core.api.SessionsApi;
+import com.fcrd.b2b.api.client.core.model.CreateSessionRequest;
+import com.fcrd.b2b.api.client.core.model.CreateSessionResponse;
+import com.fcrd.b2b.api.client.sync.ApiClient;
+import com.fcrd.b2b.api.client.sync.ApiException;
+import com.fcrd.b2b.api.client.sync.auth.HttpBearerAuth;
+import com.fcrd.b2b.api.client.sync.model.SyncStats;
 import com.fcrd.b2b.sync.service.B2BUnauthorizedException;
 import com.fcrd.b2b.sync.utils.DateTimeUtils;
 
 public class B2BBaseService {
 	private static Logger logger = LoggerFactory.getLogger(B2BBaseService.class);
+    
+    @Value("${nav.datetime.pattern}")
+    protected String navDateTimePattern;
 	
 	@Value("${b2b.core.api.base.path}")
 	private String b2bAPICoreBasePath;
@@ -30,35 +33,38 @@ public class B2BBaseService {
 	
 	@Value("${b2b.username}")
 	private String username;
+    
+    @Value("${b2b.password}")
+    private String password;
+    
+    @Value("${b2b.token}")
+    private String b2bToken;
 	
-	@Value("${b2b.password}")
-	private String password;
-	
-	private static com.fcrd.b2b.core.api.ApiClient apiCoreClient;
+	private static com.fcrd.b2b.api.client.core.ApiClient apiCoreClient;
 	private static SessionsApi sessionsApi;
 	
-	private static com.fcrd.b2b.sync.api.ApiClient apiSyncClient;
+	private static com.fcrd.b2b.api.client.sync.ApiClient apiSyncClient;
 	
-	private static String b2bToken;
 	private static HttpBearerAuth b2bAuth;
 	
 	@PostConstruct
 	private void initialSettings() {
-		logger.info("B2BBaseService.initialSettings");
-		
 		if (apiCoreClient==null) {
-			apiCoreClient = com.fcrd.b2b.core.api.Configuration.getDefaultApiClient();
+			apiCoreClient = com.fcrd.b2b.api.client.core.Configuration.getDefaultApiClient();
 			apiCoreClient.setBasePath(b2bAPICoreBasePath);
 			sessionsApi = new SessionsApi(apiCoreClient);
 		}
 		
 		if (apiSyncClient==null) {
-			apiSyncClient = com.fcrd.b2b.sync.api.Configuration.getDefaultApiClient();
+			apiSyncClient = com.fcrd.b2b.api.client.sync.Configuration.getDefaultApiClient();
 			apiSyncClient.setBasePath(b2bAPISyncBasePath);
 			apiSyncClient.setReadTimeout(b2bAPIClientReadTimeout);
 			
 			b2bAuth = (HttpBearerAuth) apiSyncClient.getAuthentication("b2bAuth");
 		}
+		
+		// for tests in development 
+		if (b2bToken != null) b2bAuth.setBearerToken(b2bToken);
 	}
 	
 	protected static ApiClient getApiSyncClient() {
@@ -92,8 +98,7 @@ public class B2BBaseService {
 			SyncStats syncStats = requestSyncStats();
 			
 			if (syncStats.getLastExternalModifiedTime() != null) {
-//				lastModifiedDateTime = DateTimeUtils.offsetDateTimeToString(syncStats.getLastExternalModifiedTime(), dateTimePattern);
-				lastModifiedDateTime = DateTimeUtils.offsetDateTimeToString(syncStats.getLastExternalModifiedTime(), "MM/dd/yyyy HH:mm:ss.SSS");
+				lastModifiedDateTime = DateTimeUtils.offsetDateTimeToString(syncStats.getLastExternalModifiedTime(), navDateTimePattern);
 			}
 			
 			logger.info("LastExternalModifiedDateTime: " + lastModifiedDateTime);

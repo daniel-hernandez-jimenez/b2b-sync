@@ -8,50 +8,29 @@ import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.fcrd.b2b.sync.api.client.ProductsApi;
-import com.fcrd.b2b.sync.api.client.model.GetProductsSyncStatsResponse;
-import com.fcrd.b2b.sync.api.client.model.MergeProductRequest;
-import com.fcrd.b2b.sync.api.client.model.MergeProductsRequest;
-import com.fcrd.b2b.sync.api.client.model.MergeResult;
-import com.fcrd.b2b.sync.api.client.model.Product;
-import com.fcrd.b2b.sync.api.client.model.SyncOperation;
-import com.fcrd.b2b.sync.api.client.model.SyncStats;
+import com.fcrd.b2b.api.client.sync.api.ProductsApi;
+import com.fcrd.b2b.api.client.sync.model.GetProductsSyncStatsResponse;
+import com.fcrd.b2b.api.client.sync.model.MergeProductRequest;
+import com.fcrd.b2b.api.client.sync.model.MergeProductsRequest;
+import com.fcrd.b2b.api.client.sync.model.MergeResult;
+import com.fcrd.b2b.api.client.sync.model.Product;
+import com.fcrd.b2b.api.client.sync.model.SyncOperation;
+import com.fcrd.b2b.api.client.sync.model.SyncStats;
 
 @Service
 public class B2BProductsService extends B2BBaseService {
 	private static Logger logger = LoggerFactory.getLogger(B2BProductsService.class);
 	
-	@Value("${datetime.pattern}")
-	protected String dateTimePattern;
-	
 	protected static ProductsApi productsApi;
 	
 	@PostConstruct
 	private void initialSettings() {
-		logger.info("B2BProductsService.initialSettings");
+		logger.info("Initializing B2BProductsService");
 		
 		productsApi = new ProductsApi();
 	}
-	
-//	public String getLastExternalModifiedDateTime() throws Exception {
-//		String lastModifiedDateTime = null;
-//		try {
-//			GetProductsSyncStatsResponse response = productsApi.getProductsSyncStats();
-//			SyncStats syncStats = response.getItem();
-//			
-////			lastModifiedDateTime = DateTimeUtils.offsetDateTimeToString(syncStats.getLastExternalModifiedTime(), dateTimePattern);
-//			lastModifiedDateTime = DateTimeUtils.offsetDateTimeToString(syncStats.getLastExternalModifiedTime(), "MM/dd/yyyy HH:mm:ss");
-//			
-//			logger.info("B2B Products LastExternalModifiedDateTime: " + lastModifiedDateTime);
-//		}
-//		catch (ApiException e) {
-//			throw (e.getCode()==401 ? new B2BUnauthorizedException("Unauthorized") : e);
-//		}
-//		return lastModifiedDateTime;
-//	}
 	
 	public SyncStats requestSyncStats() throws Exception {
 		GetProductsSyncStatsResponse response = productsApi.getProductsSyncStats();

@@ -8,30 +8,26 @@ import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.fcrd.b2b.sync.api.client.CustomersApi;
-import com.fcrd.b2b.sync.api.client.model.Customer;
-import com.fcrd.b2b.sync.api.client.model.GetCustomersSyncStatsResponse;
-import com.fcrd.b2b.sync.api.client.model.MergeCustomerRequest;
-import com.fcrd.b2b.sync.api.client.model.MergeCustomersRequest;
-import com.fcrd.b2b.sync.api.client.model.MergeResult;
-import com.fcrd.b2b.sync.api.client.model.SyncOperation;
-import com.fcrd.b2b.sync.api.client.model.SyncStats;
+import com.fcrd.b2b.api.client.sync.api.CustomersApi;
+import com.fcrd.b2b.api.client.sync.model.Customer;
+import com.fcrd.b2b.api.client.sync.model.GetCustomersSyncStatsResponse;
+import com.fcrd.b2b.api.client.sync.model.MergeCustomerRequest;
+import com.fcrd.b2b.api.client.sync.model.MergeCustomersRequest;
+import com.fcrd.b2b.api.client.sync.model.MergeResult;
+import com.fcrd.b2b.api.client.sync.model.SyncOperation;
+import com.fcrd.b2b.api.client.sync.model.SyncStats;
 
 @Service
 public class B2BCustomersService extends B2BBaseService {
 	private static Logger logger = LoggerFactory.getLogger(B2BCustomersService.class);
 	
-	@Value("${datetime.pattern}")
-	protected String dateTimePattern;
-	
 	protected static CustomersApi customersApi;
 	
 	@PostConstruct
 	private void initialSettings() {
-		logger.info("B2BCustomersService.initialSettings");
+		logger.info("Initializing B2BCustomersService");
 		
 		customersApi = new CustomersApi(getApiSyncClient());
 	}
