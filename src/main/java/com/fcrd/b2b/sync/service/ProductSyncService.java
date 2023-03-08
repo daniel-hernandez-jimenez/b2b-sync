@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.fcrd.b2b.nav.soap.client.b2bitemlist.B2BItemList;
-import com.fcrd.b2b.sync.api.client.model.Product;
-import com.fcrd.b2b.sync.api.client.model.ProductExternalData;
+import com.fcrd.b2b.api.client.sync.model.Product;
+import com.fcrd.b2b.api.client.sync.model.ProductExternalData;
 import com.fcrd.b2b.sync.config.SyncSchedulingConfigurer;
 import com.fcrd.b2b.sync.service.b2b.B2BProductsService;
 import com.fcrd.b2b.sync.service.nav.NavItemsService;
@@ -38,6 +38,7 @@ public class ProductSyncService extends SyncSchedulingConfigurer {
 	
 	@PostConstruct
 	private void initialSettings() {
+        logger.info("Initializing ProductSyncService");
 		setInitialDelay(productSyncInitialDelay);
 		setScheduleDelay(productSyncScheduleDelay);
 	}
@@ -47,7 +48,7 @@ public class ProductSyncService extends SyncSchedulingConfigurer {
 	}
 	
 	public void syncFromNavToB2BWithLastModifiedDate(boolean retrying) {
-		logger.info("Starting synchronization of Product from Nav to B2B");
+		logger.info("Starting Products sync from Nav to B2B");
 		try {
 			String lastExternalModifiedDateTime = b2bProductsService.getLastExternalModifiedDateTime();
 			

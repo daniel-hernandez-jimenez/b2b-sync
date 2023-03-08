@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.fcrd.b2b.nav.soap.client.b2bsalesimport.Root;
 import com.fcrd.b2b.nav.soap.client.b2bsalesorder.B2BSalesOrder;
 import com.fcrd.b2b.nav.soap.client.b2bsalesorder.B2BSalesOrderFields;
 import com.fcrd.b2b.nav.soap.client.b2bsalesorder.B2BSalesOrderFilter;
@@ -19,6 +18,7 @@ import com.fcrd.b2b.nav.soap.client.b2bsalesorder.B2BSalesOrderPort;
 import com.fcrd.b2b.nav.soap.client.b2bsalesorder.B2BSalesOrderService;
 import com.fcrd.b2b.nav.soap.client.b2bsalesquoteorder.B2BSalesQuoteOrder;
 import com.fcrd.b2b.nav.soap.client.b2bsalesquoteorder.B2BSalesQuoteOrderPort;
+import com.fcrd.b2b.nav.soap.client.b2bsalesquoteorder.Root;
 
 @Service
 public class NavSalesOrdersService {

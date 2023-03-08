@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.fcrd.b2b.nav.soap.client.b2bcustomerlist.B2BCustomerList;
-import com.fcrd.b2b.sync.api.client.model.Customer;
-import com.fcrd.b2b.sync.api.client.model.CustomerExternalData;
+import com.fcrd.b2b.api.client.sync.model.Customer;
+import com.fcrd.b2b.api.client.sync.model.CustomerExternalData;
 import com.fcrd.b2b.sync.config.SyncSchedulingConfigurer;
 import com.fcrd.b2b.sync.service.b2b.B2BCustomersService;
 import com.fcrd.b2b.sync.service.nav.NavCustomersService;
@@ -38,6 +38,7 @@ public class CustomerSyncService extends SyncSchedulingConfigurer {
 	
 	@PostConstruct
 	private void initialSettings() {
+	    logger.info("Initializing CustomerSyncService");
 		setInitialDelay(customerSyncInitialDelay);
 		setScheduleDelay(customerSyncScheduleDelay);
 	}
@@ -47,7 +48,7 @@ public class CustomerSyncService extends SyncSchedulingConfigurer {
 	}
 	
 	public void syncFromNavToB2BWithLastModifiedDate(boolean retrying) {
-		logger.info("Starting synchronization of Customers from Nav to B2B");
+		logger.info("Starting Customers sync from Nav to B2B");
 		try {
 			String lastExternalModifiedDateTime = b2bCustomersService.getLastExternalModifiedDateTime();
 			
