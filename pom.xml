@@ -30,20 +30,20 @@
 		
         <dependency>
             <groupId>com.fcrd.b2b</groupId>
-            <artifactId>b2b-core-api-client</artifactId>
-            <version>0.1.0-SNAPSHOT.20220809212349</version>
+            <artifactId>b2b-api-client-core</artifactId>
+            <version>0.1.0-SNAPSHOT.20221113234615</version>
         </dependency>
 		
         <dependency>
             <groupId>com.fcrd.b2b</groupId>
-            <artifactId>b2b-sync-api-client</artifactId>
-            <version>0.1.0-SNAPSHOT.20220809212349</version>
+            <artifactId>b2b-api-client-sync</artifactId>
+            <version>0.1.0-SNAPSHOT.20221113234615</version>
         </dependency>
 		
         <dependency>
             <groupId>com.fcrd.b2b</groupId>
-            <artifactId>b2b-navision-client</artifactId>
-            <version>0.1.0-SNAPSHOT.20220809180331</version>
+            <artifactId>b2b-nav-client-java</artifactId>
+            <version>0.1.0-SNAPSHOT.20220822104731</version>
         </dependency>
         
 		<dependency>
