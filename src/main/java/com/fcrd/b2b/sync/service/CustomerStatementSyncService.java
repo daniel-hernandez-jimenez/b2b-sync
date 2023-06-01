@@ -95,7 +95,7 @@ public class CustomerStatementSyncService extends SyncSchedulingConfigurer {
 		externalData.setEntryNo(navCustomerStatement.getEntryNo());
 		externalData.setKey(navCustomerStatement.getKey());
 		try {
-			externalData.setAmount(navCustomerStatement.getAmount().floatValue());
+			externalData.setAmount(navCustomerStatement.getAmount());
 		}
 		catch (Exception e) {
 			throw new Exception("Error converting customerStatement.amount: " + navCustomerStatement.getAmount() + ". " + e.getMessage());
@@ -126,7 +126,7 @@ public class CustomerStatementSyncService extends SyncSchedulingConfigurer {
 			throw new Exception("Error converting customerStatement.postingDate: " + navCustomerStatement.getPostingDate() + ". " + e.getMessage());
 		}
 		try {
-			externalData.setRemainingAmount(navCustomerStatement.getRemainingAmount().floatValue());
+			externalData.setRemainingAmount(navCustomerStatement.getRemainingAmount());
 		}
 		catch (Exception e) {
 			throw new Exception("Error converting customerStatement.remainingAmount: " + navCustomerStatement.getRemainingAmount() + ". " + e.getMessage());

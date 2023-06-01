@@ -192,7 +192,7 @@ public class OrderSyncService extends SyncSchedulingConfigurer {
 		    externalData.setPrepmtPaymentTermsCode(ExternalPrepmtPaymentTermsCode.fromValue(navSalesOrder.getPrepmtPaymentTermsCode()));
 		} catch (Exception e) { }
 		externalData.setQuoteNo(navSalesOrder.getQuoteNo());
-		externalData.setSalespersonCode(navSalesOrder.getSalespersonCode());
+		externalData.setSalesPersonCode(navSalesOrder.getSalespersonCode());
 		externalData.setShipToAddressType(ExternalShipToAddressType.fromValue(navSalesOrder.getShipToAddressType().toString()));
 		externalData.setStatus(navSalesOrder.getStatus().toString());
 		
@@ -214,8 +214,8 @@ public class OrderSyncService extends SyncSchedulingConfigurer {
 		
 		orderItem.setExternalData(generateOrderItemExternalData(navSalesOrderLine));
 		orderItem.setExternalLineNo(navSalesOrderLine.getLineNo());
-		orderItem.setItemAmount(navSalesOrderLine.getLineAmount().floatValue());
-		orderItem.setItemPrice(navSalesOrderLine.getUnitPrice().floatValue());
+		orderItem.setItemAmount(navSalesOrderLine.getLineAmount());
+		orderItem.setItemPrice(navSalesOrderLine.getUnitPrice());
 		orderItem.setItemTaxAmount(null);
 		orderItem.setItemTaxRate(null);
 		orderItem.setQuantity(navSalesOrderLine.getQuantity().intValue());
@@ -302,8 +302,6 @@ public class OrderSyncService extends SyncSchedulingConfigurer {
 	}
 	
 	private Holder<Root> generateHolderRootSalesOrder(Order order) {
-//		logger.info(" > order: " + order);
-		
 		TempSalesHeader tempSalesHeader = createTempSalesHeader(order);
 		logger.info(" > tempSalesHeader: " + tempSalesHeader);
 		int lineNo = 0;
@@ -339,7 +337,7 @@ public class OrderSyncService extends SyncSchedulingConfigurer {
 		try { tempSalesHeader.setPromisedDeliveryDate(DateTimeUtils.minXMLGregorianCalendar()); }
 		catch (Exception e) { }
 		tempSalesHeader.setQuoteNo(order.getExternalData().getQuoteNo());
-		tempSalesHeader.setSalesPersonCode(order.getExternalData().getSalespersonCode());
+		tempSalesHeader.setSalesPersonCode(order.getExternalData().getSalesPersonCode());
 		tempSalesHeader.setAssignedUserId(order.getExternalData().getAssignedUserId());
 		tempSalesHeader.setStatus(order.getExternalData().getStatus());
 		tempSalesHeader.setIncoterms("");
@@ -420,10 +418,10 @@ public class OrderSyncService extends SyncSchedulingConfigurer {
 		tempSalesLine.setDescription(orderItem.getExternalData().getDescription());
 		tempSalesLine.setUnitOfMeasure("EACH");
 		tempSalesLine.setQuantity(new BigDecimal(orderItem.getQuantity()));
-		tempSalesLine.setUnitPrice(new BigDecimal(orderItem.getItemPrice()));
+		tempSalesLine.setUnitPrice(orderItem.getItemPrice());
 		tempSalesLine.setDiscountAmount(new BigDecimal("0"));
 		tempSalesLine.setTaxGroupCode("");
-		tempSalesLine.setLineAmount(new BigDecimal(orderItem.getTotalAmount()));
+		tempSalesLine.setLineAmount(orderItem.getTotalAmount());
 		tempSalesLine.setQtyToShip(new BigDecimal(orderItem.getQuantity()));
 		tempSalesLine.setQtyToInv(new BigDecimal(orderItem.getQuantity()));
 		tempSalesLine.setQtyShipped(new BigDecimal("0"));

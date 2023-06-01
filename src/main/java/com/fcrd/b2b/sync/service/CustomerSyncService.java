@@ -108,7 +108,7 @@ public class CustomerSyncService extends SyncSchedulingConfigurer {
 		}
 		externalData.setName(navCustomer.getName());
 		externalData.setPaymentTermsCode(navCustomer.getPaymentTermsCode());
-		externalData.setSalespersonCode(navCustomer.getSalespersonCode());
+		externalData.setSalesPersonCode(navCustomer.getSalespersonCode());
 		
 		customer.setExternalData(externalData);
 		
